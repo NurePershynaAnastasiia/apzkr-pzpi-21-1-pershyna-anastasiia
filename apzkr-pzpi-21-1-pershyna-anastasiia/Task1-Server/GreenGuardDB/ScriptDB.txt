@@ -1,0 +1,435 @@
+USE [master]
+GO
+/****** Object:  Database [GreenGuard]    Script Date: 12.06.2024 18:25:47 ******/
+CREATE DATABASE [GreenGuard]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'GreenGuard', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\GreenGuard.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'GreenGuard_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\GreenGuard_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [GreenGuard] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [GreenGuard].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [GreenGuard] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [GreenGuard] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [GreenGuard] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [GreenGuard] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [GreenGuard] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [GreenGuard] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [GreenGuard] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [GreenGuard] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [GreenGuard] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [GreenGuard] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [GreenGuard] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [GreenGuard] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [GreenGuard] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [GreenGuard] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [GreenGuard] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [GreenGuard] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [GreenGuard] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [GreenGuard] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [GreenGuard] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [GreenGuard] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [GreenGuard] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [GreenGuard] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [GreenGuard] SET RECOVERY FULL 
+GO
+ALTER DATABASE [GreenGuard] SET  MULTI_USER 
+GO
+ALTER DATABASE [GreenGuard] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [GreenGuard] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [GreenGuard] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [GreenGuard] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [GreenGuard] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [GreenGuard] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'GreenGuard', N'ON'
+GO
+ALTER DATABASE [GreenGuard] SET QUERY_STORE = OFF
+GO
+USE [GreenGuard]
+GO
+/****** Object:  Table [dbo].[Fertilizer]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Fertilizer](
+	[Fertilizer_id] [int] IDENTITY(1,1) NOT NULL,
+	[Fertilizer_name] [nvarchar](50) NOT NULL,
+	[Fertilizer_quantity] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Fertilizer_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Pest]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pest](
+	[Pest_id] [int] IDENTITY(1,1) NOT NULL,
+	[Pest_name] [nvarchar](50) NOT NULL,
+	[Pest_description] [nvarchar](300) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Pest_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Pest_in_Plant]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pest_in_Plant](
+	[Pest_in_Plant_id] [int] IDENTITY(1,1) NOT NULL,
+	[Plant_id] [int] NULL,
+	[Pest_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Pest_in_Plant_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Plant]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Plant](
+	[Plant_id] [int] IDENTITY(1,1) NOT NULL,
+	[Plant_location] [nvarchar](500) NOT NULL,
+	[Temp] [float] NULL,
+	[Humidity] [float] NULL,
+	[Light] [float] NULL,
+	[Additional_info] [nvarchar](300) NULL,
+	[Plant_state] [nvarchar](150) NULL,
+	[Plant_type_id] [int] NULL,
+ CONSTRAINT [PK__Plant__DB7091EF049B57C1] PRIMARY KEY CLUSTERED 
+(
+	[Plant_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Plant_in_Task]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Plant_in_Task](
+	[Plant_in_Task_id] [int] IDENTITY(1,1) NOT NULL,
+	[Plant_id] [int] NULL,
+	[Task_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Plant_in_Task_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Plant_type]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Plant_type](
+	[Plant_type_id] [int] IDENTITY(1,1) NOT NULL,
+	[Plant_type_name] [nvarchar](50) NOT NULL,
+	[Water_freq] [int] NULL,
+	[Opt_temp] [float] NULL,
+	[Opt_humidity] [float] NULL,
+	[Opt_light] [float] NULL,
+	[Plant_type_description] [nvarchar](300) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Plant_type_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Task]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Task](
+	[Task_id] [int] IDENTITY(1,1) NOT NULL,
+	[Task_date] [datetime] NULL,
+	[Task_type] [nvarchar](50) NULL,
+	[Fertilizer_id] [int] NULL,
+	[Task_details] [nvarchar](500) NULL,
+	[Task_state] [nvarchar](50) NULL,
+ CONSTRAINT [PK__Task__716846B509ACBBA1] PRIMARY KEY CLUSTERED 
+(
+	[Task_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Worker]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Worker](
+	[Worker_id] [int] IDENTITY(1,1) NOT NULL,
+	[Worker_name] [nvarchar](100) NOT NULL,
+	[Phone_number] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NULL,
+	[Start_work_time] [time](7) NULL,
+	[End_work_time] [time](7) NULL,
+	[Password_hash] [nvarchar](500) NULL,
+	[Is_Admin] [bit] NULL,
+ CONSTRAINT [PK__Worker__F35D9BFCC8A455D6] PRIMARY KEY CLUSTERED 
+(
+	[Worker_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Worker_in_Task]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Worker_in_Task](
+	[Worker_in_Task_id] [int] IDENTITY(1,1) NOT NULL,
+	[Task_id] [int] NULL,
+	[Worker_id] [int] NULL,
+	[Task_status] [nvarchar](300) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Worker_in_Task_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Working_Schedule]    Script Date: 12.06.2024 18:25:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Working_Schedule](
+	[Working_Schedule_id] [int] IDENTITY(1,1) NOT NULL,
+	[Worker_id] [int] NULL,
+	[Monday] [bit] NULL,
+	[Tuesday] [bit] NULL,
+	[Wednesday] [bit] NULL,
+	[Thursday] [bit] NULL,
+	[Friday] [bit] NULL,
+	[Saturday] [bit] NULL,
+	[Sunday] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Working_Schedule_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Fertilizer] ON 
+GO
+INSERT [dbo].[Fertilizer] ([Fertilizer_id], [Fertilizer_name], [Fertilizer_quantity]) VALUES (1, N'Азотне добриво', 110)
+GO
+INSERT [dbo].[Fertilizer] ([Fertilizer_id], [Fertilizer_name], [Fertilizer_quantity]) VALUES (2, N'Agrecol', 10)
+GO
+INSERT [dbo].[Fertilizer] ([Fertilizer_id], [Fertilizer_name], [Fertilizer_quantity]) VALUES (1008, N'YaraMila', 100)
+GO
+SET IDENTITY_INSERT [dbo].[Fertilizer] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Pest] ON 
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (1, N'Павутинний кліщ', N'Плетуть практично прозору павутинку. Зазвичай шкідників можна побачити неозброєним оком на внутрішній поверхні листа. Вони харчуються виключно соком рослин, чим і завдають непоправної шкоди.')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (2, N'Щитівка', N'Випуклі округлі комахи, розміром 2-3 мм швидко присмоктуються до поверхні листя, черешків, міжвузлів та живляться соком рослини. На листі можна помітити плями.')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (3, N'Білокрилка', N'Білі шкідники, схожі на маленьку міль. Якщо трохи струсити гілочку, то з-під неї розлітаються дрібні білі комахи. Пошкоджене листя стає липким, покривається плямами, скручується.')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (4, N'Попелиці', N'Попелиці — це маленькі комахи розміром до 2 мм. Вони мають м’яке овальне тіло та полюбляють задуху (тому регулярне провітрювання зменшує вірогідність їх появи).')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (5, N'string', N'string')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (6, N'test', N'string')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (7, N'шкідник', N'string')
+GO
+INSERT [dbo].[Pest] ([Pest_id], [Pest_name], [Pest_description]) VALUES (8, N'тестовий шкідник', N'string')
+GO
+SET IDENTITY_INSERT [dbo].[Pest] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Pest_in_Plant] ON 
+GO
+INSERT [dbo].[Pest_in_Plant] ([Pest_in_Plant_id], [Plant_id], [Pest_id]) VALUES (5, 5, 1)
+GO
+INSERT [dbo].[Pest_in_Plant] ([Pest_in_Plant_id], [Plant_id], [Pest_id]) VALUES (6, 5, 4)
+GO
+INSERT [dbo].[Pest_in_Plant] ([Pest_in_Plant_id], [Plant_id], [Pest_id]) VALUES (14, 4, 1)
+GO
+SET IDENTITY_INSERT [dbo].[Pest_in_Plant] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Plant] ON 
+GO
+INSERT [dbo].[Plant] ([Plant_id], [Plant_location], [Temp], [Humidity], [Light], [Additional_info], [Plant_state], [Plant_type_id]) VALUES (4, N'біля вікна', 23, 80, 2000, N'Рослина у хорошому стані.', N'Температура в нормі, Рівень освітлення зависокий, Вологість зависока', 7)
+GO
+INSERT [dbo].[Plant] ([Plant_id], [Plant_location], [Temp], [Humidity], [Light], [Additional_info], [Plant_state], [Plant_type_id]) VALUES (5, N'навпроти входу', 25, 90, 1500, N'У рослини пожовкле листя.', N'Температура зависока, Рівень освітлення в нормі, Вологість зависока', 9)
+GO
+INSERT [dbo].[Plant] ([Plant_id], [Plant_location], [Temp], [Humidity], [Light], [Additional_info], [Plant_state], [Plant_type_id]) VALUES (20, N'rgdg', 30, 30, 1221, N'', N'Температура зависока, Рівень освітлення занизький, Вологість занизька', 6)
+GO
+INSERT [dbo].[Plant] ([Plant_id], [Plant_location], [Temp], [Humidity], [Light], [Additional_info], [Plant_state], [Plant_type_id]) VALUES (35, N'біля Сільпо', 30, 90, 1000, N'', N'Температура зависока, Рівень освітлення занизький, Вологість зависока', 11)
+GO
+SET IDENTITY_INSERT [dbo].[Plant] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Plant_in_Task] ON 
+GO
+INSERT [dbo].[Plant_in_Task] ([Plant_in_Task_id], [Plant_id], [Task_id]) VALUES (4, 4, 1009)
+GO
+INSERT [dbo].[Plant_in_Task] ([Plant_in_Task_id], [Plant_id], [Task_id]) VALUES (5, 5, 1009)
+GO
+INSERT [dbo].[Plant_in_Task] ([Plant_in_Task_id], [Plant_id], [Task_id]) VALUES (6, 5, 1010)
+GO
+INSERT [dbo].[Plant_in_Task] ([Plant_in_Task_id], [Plant_id], [Task_id]) VALUES (9, 4, 1022)
+GO
+SET IDENTITY_INSERT [dbo].[Plant_in_Task] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Plant_type] ON 
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (6, N'Замиокулькас', 10, 25, 50, 2000, N'Замиокулькас - це рослина з густими листям, яка вимагає мінімального догляду та відповідної вологості та освітлення.')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (7, N'Сансевієрія', 14, 20, 40, 1500, N'Сансевієрія - це сукулентна рослина, яка відома своєю стійкістю до низьких рівнів освітлення та потребує мінімального поливу.')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (8, N'Драцена', 7, 22, 60, 2000, N'Драцена - це рослина з товстими листками, яка добре росте в умовах помірного освітлення та вологості.')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (9, N'Спатифілум', 3, 20, 70, 1500, N'Спатифілум - це рослина з білими квітами, яка вимагає регулярного поливу та відносно високої вологості.')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (10, N'Пахітна дендробіум', 7, 18, 50, 2000, N'Пахітна дендробіум - це орхідея, яка виростає в декоративних кімнатних умовах і вимагає помірного поливу та яскравого, але розсіяного світла.')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (11, N'Фікус', 10, 22, 55, 1700, N'Фікус – одна з найпопулярніших домашніх рослин. Вона родом із тропічних і субтропічних лісів Східної Азії, а загалом у Австралії, Америці, Африці, Азії росте більше 800 видів фікусів')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (12, N'string', 5, 20, 60, 1000, N'string')
+GO
+INSERT [dbo].[Plant_type] ([Plant_type_id], [Plant_type_name], [Water_freq], [Opt_temp], [Opt_humidity], [Opt_light], [Plant_type_description]) VALUES (13, N'test', 5, 20, 60, 100, N'string')
+GO
+SET IDENTITY_INSERT [dbo].[Plant_type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Task] ON 
+GO
+INSERT [dbo].[Task] ([Task_id], [Task_date], [Task_type], [Fertilizer_id], [Task_details], [Task_state]) VALUES (1009, CAST(N'2024-05-07T00:00:00.000' AS DateTime), N'watering', NULL, N'Полив рослин', N'finished')
+GO
+INSERT [dbo].[Task] ([Task_id], [Task_date], [Task_type], [Fertilizer_id], [Task_details], [Task_state]) VALUES (1010, CAST(N'2024-05-14T00:00:00.000' AS DateTime), N'fertilizing', 1, N'Внесення добрив', N'pending')
+GO
+INSERT [dbo].[Task] ([Task_id], [Task_date], [Task_type], [Fertilizer_id], [Task_details], [Task_state]) VALUES (1022, CAST(N'2024-05-30T17:56:41.000' AS DateTime), N'cutting', 1, N'Підрізати листя', N'finished')
+GO
+SET IDENTITY_INSERT [dbo].[Task] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Worker] ON 
+GO
+INSERT [dbo].[Worker] ([Worker_id], [Worker_name], [Phone_number], [Email], [Start_work_time], [End_work_time], [Password_hash], [Is_Admin]) VALUES (10, N'Денисенко Денис Денисов', N'1234567890121', N'denys@example.com', CAST(N'08:00:00' AS Time), CAST(N'13:00:00' AS Time), N'AQAAAAIAAYagAAAAEPFkVjYLFK7chjwW8YxPNJjdngVeLX0Y+/6EjWtsD/C99tI9CH5hQOZFHdgiI2TtgA==', 1)
+GO
+INSERT [dbo].[Worker] ([Worker_id], [Worker_name], [Phone_number], [Email], [Start_work_time], [End_work_time], [Password_hash], [Is_Admin]) VALUES (11, N'Павло Олексійович Зуб', N'123456855451111', N'pasha@google.com', CAST(N'12:00:00' AS Time), CAST(N'17:00:00' AS Time), N'AQAAAAIAAYagAAAAEHYd2SJ9FlIBiai4pcKjvoeokskzS5fd4MzNjzuerUVW2zJeP7UjWkEx0/XS0t+K0Q==', 0)
+GO
+INSERT [dbo].[Worker] ([Worker_id], [Worker_name], [Phone_number], [Email], [Start_work_time], [End_work_time], [Password_hash], [Is_Admin]) VALUES (12, N'Чудова Марія Григорівна', N'54321', N'maria@example.com', CAST(N'10:31:00' AS Time), CAST(N'15:00:00' AS Time), N'AQAAAAIAAYagAAAAENAqTA4jf6Nc/nWBJ3q0opUCv6BPFLqzA1Pjh3LLYmLqd3AAQmOzQd+ct/SmLOScRg==', 0)
+GO
+SET IDENTITY_INSERT [dbo].[Worker] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Worker_in_Task] ON 
+GO
+INSERT [dbo].[Worker_in_Task] ([Worker_in_Task_id], [Task_id], [Worker_id], [Task_status]) VALUES (5, 1009, 11, N'finished')
+GO
+INSERT [dbo].[Worker_in_Task] ([Worker_in_Task_id], [Task_id], [Worker_id], [Task_status]) VALUES (6, 1010, 12, NULL)
+GO
+INSERT [dbo].[Worker_in_Task] ([Worker_in_Task_id], [Task_id], [Worker_id], [Task_status]) VALUES (8, 1010, 11, N'finished')
+GO
+INSERT [dbo].[Worker_in_Task] ([Worker_in_Task_id], [Task_id], [Worker_id], [Task_status]) VALUES (9, 1022, 11, N'finished')
+GO
+INSERT [dbo].[Worker_in_Task] ([Worker_in_Task_id], [Task_id], [Worker_id], [Task_status]) VALUES (11, 1022, 10, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Worker_in_Task] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Working_Schedule] ON 
+GO
+INSERT [dbo].[Working_Schedule] ([Working_Schedule_id], [Worker_id], [Monday], [Tuesday], [Wednesday], [Thursday], [Friday], [Saturday], [Sunday]) VALUES (3, 11, 1, 1, 1, 1, 0, 0, 0)
+GO
+INSERT [dbo].[Working_Schedule] ([Working_Schedule_id], [Worker_id], [Monday], [Tuesday], [Wednesday], [Thursday], [Friday], [Saturday], [Sunday]) VALUES (4, 12, 1, 0, 1, 0, 1, 0, 1)
+GO
+SET IDENTITY_INSERT [dbo].[Working_Schedule] OFF
+GO
+ALTER TABLE [dbo].[Pest_in_Plant]  WITH CHECK ADD FOREIGN KEY([Pest_id])
+REFERENCES [dbo].[Pest] ([Pest_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Pest_in_Plant]  WITH CHECK ADD  CONSTRAINT [FK__Pest_in_P__Plant__73BA3083] FOREIGN KEY([Plant_id])
+REFERENCES [dbo].[Plant] ([Plant_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Pest_in_Plant] CHECK CONSTRAINT [FK__Pest_in_P__Plant__73BA3083]
+GO
+ALTER TABLE [dbo].[Plant]  WITH CHECK ADD  CONSTRAINT [FK__Plant__Plant_typ__48CFD27E] FOREIGN KEY([Plant_type_id])
+REFERENCES [dbo].[Plant_type] ([Plant_type_id])
+GO
+ALTER TABLE [dbo].[Plant] CHECK CONSTRAINT [FK__Plant__Plant_typ__48CFD27E]
+GO
+ALTER TABLE [dbo].[Plant_in_Task]  WITH CHECK ADD  CONSTRAINT [FK__Plant_in___Plant__3D5E1FD2] FOREIGN KEY([Plant_id])
+REFERENCES [dbo].[Plant] ([Plant_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Plant_in_Task] CHECK CONSTRAINT [FK__Plant_in___Plant__3D5E1FD2]
+GO
+ALTER TABLE [dbo].[Plant_in_Task]  WITH CHECK ADD  CONSTRAINT [FK__Plant_in___Task___3E52440B] FOREIGN KEY([Task_id])
+REFERENCES [dbo].[Task] ([Task_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Plant_in_Task] CHECK CONSTRAINT [FK__Plant_in___Task___3E52440B]
+GO
+ALTER TABLE [dbo].[Task]  WITH CHECK ADD  CONSTRAINT [FK__Task__Fertilizer__2F10007B] FOREIGN KEY([Fertilizer_id])
+REFERENCES [dbo].[Fertilizer] ([Fertilizer_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Task] CHECK CONSTRAINT [FK__Task__Fertilizer__2F10007B]
+GO
+ALTER TABLE [dbo].[Worker_in_Task]  WITH CHECK ADD  CONSTRAINT [FK__Worker_in__Task___6FE99F9F] FOREIGN KEY([Task_id])
+REFERENCES [dbo].[Task] ([Task_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Worker_in_Task] CHECK CONSTRAINT [FK__Worker_in__Task___6FE99F9F]
+GO
+ALTER TABLE [dbo].[Worker_in_Task]  WITH CHECK ADD FOREIGN KEY([Worker_id])
+REFERENCES [dbo].[Worker] ([Worker_id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Working_Schedule]  WITH CHECK ADD FOREIGN KEY([Worker_id])
+REFERENCES [dbo].[Worker] ([Worker_id])
+ON DELETE CASCADE
+GO
+USE [master]
+GO
+ALTER DATABASE [GreenGuard] SET  READ_WRITE 
+GO

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Guard</title>
+    <link rel="stylesheet" href="../App.css">
+</head>
+<body>
+    <div class="nav">
+        <img src="../../public/images/GreenGuard_logo.png" class="logo">
+        <ul>
+            <li id="profile" data-translate="profile"><a href="UserProfilePage.html">My profile</a></li>
+            <li id="backups" class="nav-selected" data-translate="backups"><a href="BackupPage.html">Backups</a></li>
+            <li id="plants" data-translate="plants"><a href="PlantPage.html">Plants</a></li>
+            <li id="tasks" data-translate="tasks"><a href="TaskPage.html">Tasks</a></li>
+            <li id="workers" data-translate="workers"><a href="WorkersPage.html">Workers</a></li>
+            <li id="logout" data-translate="logout"><a href="LoginPage.html">Log out</a></li>
+            <div class="language-selector">
+                <select id="language-select">
+                    <option value="en">English</option>
+                    <option value="ua">Ukrainian</option>
+                </select>
+            </div>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">
+            <h1 data-translate="manage_database">Here you can manage your database data</h1>
+        </div>
+        <div class="backups-container">
+            <table id="backups-table">
+                <thead>
+                    <tr>
+                        <th data-translate="name">Name</th>
+                        <th data-translate="restore_database">Restore database</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+                <tfoot>
+                    <td colspan="2">
+                        <button class="add-button" id="make-backup-button" data-translate="make_backup">Make database backup</button>
+                    </td>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script src="../services/BackupService.js"></script>
+    <script src="../ui/BackupUI.js"></script>
+</body>
+</html>
